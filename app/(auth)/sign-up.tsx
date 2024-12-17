@@ -10,47 +10,22 @@ import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
 //import { fetchAPI } from "@/lib/fetch";
 
+import { useSession } from '../../context/ctx';
+
 const SignUp = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
 
- const onSignUpPress = async () => {
-    try {
-      // Replace this URL with your Xano API endpoint for logging in
-      const xanoUrl = "https://xjxu-uarm-amxk.n7d.xano.io/api:XeSFfBac/auth/signup";
+    const { signUp } = useSession();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-      // Make a POST request to Xano
-      const response = await fetch(xanoUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          password: form.password,
-        }),
-      });
-
-      // Parse the response
-      const data = await response.json();
-
-      // Check if the login was successful
-      if (response.ok) {
-        Alert.alert("Success", "You have successfully signed up!");
-        router.replace("/(root)/(tabs)/home");
-      } else {
-        // Handle login failure
-        Alert.alert("Error", data.message || "Sign up failed. Please try again.");
-      }
-    } catch (error) {
-      // Handle request failure
-      Alert.alert("Error", "Something went wrong. Please try again later.");
-    }
-  };
+    const handleSignUp = async () => {
+        console.debug("signup called");
+        const signUpWorked = await signUp(name, email, password);
+        if (signUpWorked) {
+            router.replace('../(tabs)/home');
+        }
+    };
 
     return(
         <ScrollView className="flex-1 bg-white">
@@ -65,27 +40,27 @@ const SignUp = () => {
                         label="Name"
                         placeholder="Enter your name"
                         icon={icons.person}
-                        value={form.name}
-                        onChangeText={(value) => setForm( {...form, name: value})}
+                        value={name}
+                        onChangeText={setName}
                     /> 
                     <InputField 
                         label="Email"
                         placeholder="Enter your email"
                         icon={icons.email}
-                        value={form.email}
-                        onChangeText={(value) => setForm( {...form, email: value})}
+                        value={email}
+                        onChangeText={setEmail}
                     /> 
                     <InputField 
                         label="Password"
                         placeholder="Set a password"
                         icon={icons.lock}
                         secureTextEntry={true}
-                        value={form.password}
-                        onChangeText={(value) => setForm( {...form, password: value})}
+                        value={password}
+                        onChangeText={setPassword}
                     /> 
                     <CustomButton
                         title="Sign Up"
-                        onPress={onSignUpPress}
+                        onPress={handleSignUp}
                         className="mt-6"
                     />
 
