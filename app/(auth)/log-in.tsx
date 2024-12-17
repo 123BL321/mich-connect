@@ -1,10 +1,8 @@
 //import { useSignUp } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { TextInput, Button, Alert, Image, ScrollView, Text, View, Platform } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 //import { ReactNativeModal } from "react-native-modal";
-import * as SecureStore from "expo-secure-store";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
@@ -14,43 +12,37 @@ import { icons, images } from "@/constants";
 
 import { useSession } from '../../context/ctx';
 
-async function save(key: any, value: any) {
-	try {
-		if (Platform.OS === 'web') {
-			await AsyncStorage.setItem(key, value);
-		} else { // mobile
-			await SecureStore.setItemAsync(key, value.toString());
-		}
-	} catch (error) {
-		console.error("Error saving data:", error);
-	}
-}
+const SignUp = () => {
 
-const LogIn = () => {
-    const { signIn } = useSession();
-
+    const { signUp } = useSession();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSignIn = async () => {
-        const signInWorked = await signIn(email, password);
-        if (signInWorked) {
+    const handleSignUp = async () => {
+        console.debug("signup called");
+        const signUpWorked = await signUp(name, email, password);
+        if (signUpWorked) {
             router.replace('../(tabs)/home');
         }
     };
-
-
-
 
     return(
         <ScrollView className="flex-1 bg-white">
             <View className="flex-1 bg-white">
                 <View className="relative w-full h-[250px]">
                     <Text className="text-2xl text-black font-JakartaSemiBold absolute bottom-5 left-5">
-                        Welcome Back! 👋
+                        Create Your Account
                     </Text>
                 </View>
                 <View className="p-5 ">
+                    <InputField 
+                        label="Name"
+                        placeholder="Enter your name"
+                        icon={icons.person}
+                        value={name}
+                        onChangeText={setName}
+                    /> 
                     <InputField 
                         label="Email"
                         placeholder="Enter your email"
@@ -67,17 +59,17 @@ const LogIn = () => {
                         onChangeText={setPassword}
                     /> 
                     <CustomButton
-                        title="Sign In"
-                        onPress={handleSignIn}
+                        title="Sign Up"
+                        onPress={handleSignUp}
                         className="mt-6"
                     />
 
                     //OAuth
 
-                    <Link href="/sign-up" className= "text-lg text-center text-general-200 mt-10" >
-                        <Text>Don't have an account? </Text>
+                    <Link href="/log-in" className= "text-lg text-center text-general-200 mt-10" >
+                        <Text>Already have an account? </Text>
                         <Text className="text-primary-500">
-                            Sign Up
+                            Sign In
                         </Text>
                     </Link>
                 </View>
@@ -87,4 +79,4 @@ const LogIn = () => {
     );
 };
 
-export default LogIn;
+export default SignUp;
