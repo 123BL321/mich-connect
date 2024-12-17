@@ -1,7 +1,7 @@
 //import { useSignUp } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, Image, ScrollView, Text, View, Platform } from "react-native";
+import { TextInput, Button, Alert, Image, ScrollView, Text, View, Platform } from "react-native";
 //import { ReactNativeModal } from "react-native-modal";
 import * as SecureStore from "expo-secure-store";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,6 +11,8 @@ import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
 //import { fetchAPI } from "@/lib/fetch";
+
+import { useSession } from '../../context/ctx';
 
 async function save(key: any, value: any) {
 	try {
@@ -25,47 +27,19 @@ async function save(key: any, value: any) {
 }
 
 const LogIn = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+    const { signIn } = useSession();
 
- const onLogInPress = async () => {
-    try {
-      // Replace this URL with your Xano API endpoint for logging in
-      const xanoUrl = "https://xjxu-uarm-amxk.n7d.xano.io/api:XeSFfBac/auth/login";
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-      // Make a POST request to Xano
-      const response = await fetch(xanoUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-      });
+    const handleSignIn = async () => {
+        const signInWorked = await signIn(email, password);
+        if (signInWorked) {
+            router.replace('../(tabs)/home');
+        }
+    };
 
-      // Parse the response
-      const data = await response.json();
 
-      // Check if the login was successful
-      if (response.ok) {
-        Alert.alert("Success", "You have successfully logged in!");
-        save('authTokenKey', data.authToken);
-        router.replace("/(root)/(tabs)/home");
-
-      } else {
-        // Handle login failure
-        Alert.alert("Error", data.message || "Login failed. Please try again.");
-      }
-    } catch (error) {
-      // Handle request failure
-      Alert.alert("Error", "Something went wrong. Please try again later.");
-    }
-  };
 
 
     return(
@@ -81,20 +55,20 @@ const LogIn = () => {
                         label="Email"
                         placeholder="Enter your email"
                         icon={icons.email}
-                        value={form.email}
-                        onChangeText={(value) => setForm( {...form, email: value})}
+                        value={email}
+                        onChangeText={setEmail}
                     /> 
                     <InputField 
                         label="Password"
                         placeholder="Set a password"
                         icon={icons.lock}
                         secureTextEntry={true}
-                        value={form.password}
-                        onChangeText={(value) => setForm( {...form, password: value})}
+                        value={password}
+                        onChangeText={setPassword}
                     /> 
                     <CustomButton
                         title="Sign In"
-                        onPress={onLogInPress}
+                        onPress={handleSignIn}
                         className="mt-6"
                     />
 
