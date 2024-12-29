@@ -2,7 +2,7 @@
 
 Welcome to Michigan Connect, an app designed to strengthen friendships and foster social connections, especially on college campuses. Michigan Connect enables users to create and visualize social events on an interactive map interface, share real-time locations with friends, and stay connected effortlessly.
 
-##Features
+## Features
 
 Event Creation & Visualization: Easily create events with details such as location, time, and description. Visualize events on an intuitive map interface.
 
@@ -12,15 +12,15 @@ Campus Focus: Tailored for college campuses to help students foster stronger con
 
 User-Friendly Interface: A seamless, interactive experience powered by React Native and Expo.
 
-##Tech Stack
+## Tech Stack
 
-###Frontend
+### Frontend
 
 React Native: For building the app's user-friendly and dynamic interface.
 
 Expo: Simplifies the development and deployment process for React Native apps.
 
-###Backend
+### Backend
 
 Xano: Handles API endpoints and database management, ensuring secure and efficient data handling.
 
@@ -32,7 +32,7 @@ Installation and Setup
 
 Follow these steps to get Michigan Connect up and running:
 
-##Usage
+## Usage
 
 1. Sign Up or Log In: Create an account or log in to start using the app.
 
@@ -42,7 +42,7 @@ Follow these steps to get Michigan Connect up and running:
 
 4. Share Locations: Enable real-time location sharing to connect with friends seamlessly.
 
-##Future Enhancements
+## Future Enhancements
 
 * Integration with college-specific networks for more personalized experiences.
 
